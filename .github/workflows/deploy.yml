@@ -33,7 +33,7 @@ jobs:
       - name: Build
         run: npm run build
         env:
-          VITE_BASE: /zheng-sheng.github.io/
+          VITE_BASE: /zhengsheng.github.io/
 
       - name: SPA fallback for GitHub Pages
         run: cp dist/index.html dist/404.html
