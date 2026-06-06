@@ -2,13 +2,21 @@ import { useParams, Link } from 'react-router-dom'
 import ProductImage from '../components/ui/ProductImage'
 import Button from '../components/ui/Button'
 import SpecTable from '../components/ui/SpecTable'
-import AdvantageCard from '../components/cards/AdvantageCard'
 import ScrollReveal from '../components/motion/ScrollReveal'
+import { siteConfig } from '../config/siteConfig'
 import { products, defaultProductSpecs } from '../data/productData'
+import { useLanguage } from '../i18n/LanguageProvider'
+import { localizeProduct, localizeSpec } from '../i18n/localize'
 
 export default function ProductDetail() {
   const { id } = useParams<{ id: string }>()
-  const product = products.find((p) => p.id === id) ?? products[0]
+  const { locale, t } = useLanguage()
+  const raw = products.find((p) => p.id === id) ?? products[0]
+  const product = localizeProduct(raw, locale)
+  const specs =
+    product.specs.length > 0
+      ? product.specs
+      : defaultProductSpecs.map((s) => localizeSpec(s, locale))
 
   return (
     <>
@@ -16,7 +24,7 @@ export default function ProductDetail() {
         <ScrollReveal className="container mx-auto px-4 md:px-6 lg:px-8">
           <nav className="mb-8 text-sm text-navy/50">
             <Link to="/products" className="hover:text-accent">
-              产品中心
+              {t('products.breadcrumb')}
             </Link>
             <span className="mx-2">/</span>
             <span className="text-navy">{product.name}</span>
@@ -25,7 +33,7 @@ export default function ProductDetail() {
           <div className="grid gap-10 lg:grid-cols-2 lg:gap-16">
             <ProductImage
               imageUrl={product.imageUrl}
-              category={product.category}
+              categoryKey={raw.categoryKey}
               alt={product.name}
               variant="detail"
             />
@@ -36,14 +44,35 @@ export default function ProductDetail() {
               <h1 className="mt-4 text-2xl font-bold text-navy md:text-3xl lg:text-4xl">
                 {product.name}
               </h1>
-              <p className="mt-2 text-sm text-navy/50">型号：{product.model}</p>
+              <p className="mt-2 text-sm text-navy/50">
+                {t('common.model')}：{product.model}
+              </p>
               <p className="mt-6 text-base leading-relaxed text-navy/70">
                 {product.description}
               </p>
+
+              <div className="mt-8 space-y-4">
+                {product.features.map((feature) => (
+                  <div
+                    key={feature.title}
+                    className="rounded-lg border border-gray-100 bg-gray-50/80 px-4 py-4"
+                  >
+                    <h3 className="text-sm font-semibold text-navy md:text-base">
+                      {feature.title}
+                    </h3>
+                    <p className="mt-2 text-sm leading-relaxed text-navy/65">
+                      {feature.description}
+                    </p>
+                  </div>
+                ))}
+              </div>
+
               <div className="mt-8 flex flex-wrap gap-4">
-                <Button href="#">下载产品资料</Button>
-                <Button to="/about#contact" variant="outline">
-                  咨询报价
+                <Button href={siteConfig.purchase.international} external>
+                  {t('common.buyInternational')}
+                </Button>
+                <Button href={siteConfig.purchase.domestic} external variant="outline">
+                  {t('common.buyDomestic')}
                 </Button>
               </div>
             </div>
@@ -54,42 +83,19 @@ export default function ProductDetail() {
       <section className="bg-gray-50 py-12 md:py-16">
         <ScrollReveal className="container mx-auto max-w-3xl px-4 md:px-6 lg:px-8">
           <h2 className="mb-8 text-center text-2xl font-semibold text-navy">
-            核心参数
+            {t('products.coreSpecs')}
           </h2>
-          <SpecTable specs={product.specs.length > 0 ? product.specs : defaultProductSpecs} />
+          <SpecTable specs={specs} />
         </ScrollReveal>
-      </section>
-
-      <section className="py-12 md:py-16">
-        <div className="container mx-auto px-4 md:px-6 lg:px-8">
-          <ScrollReveal>
-            <h2 className="mb-10 text-center text-2xl font-semibold text-navy">
-              产品特点
-            </h2>
-          </ScrollReveal>
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {product.features.map((feature, index) => (
-              <ScrollReveal key={feature.title} delay={index * 0.1}>
-                <AdvantageCard
-                  index={index}
-                  title={feature.title}
-                  description={feature.description}
-                />
-              </ScrollReveal>
-            ))}
-          </div>
-        </div>
       </section>
 
       <section className="border-t border-gray-100 bg-gray-50 py-12 md:py-16">
         <ScrollReveal className="container mx-auto px-4 text-center md:px-6 lg:px-8">
-          <h2 className="text-2xl font-semibold text-navy">应用场景</h2>
-          <p className="mt-4 text-navy/60">
-            该产品可应用于智能沙发椅、智能睡床等多种场景
-          </p>
+          <h2 className="text-2xl font-semibold text-navy">{t('products.scenarios')}</h2>
+          <p className="mt-4 text-navy/60">{t('products.scenariosDesc')}</p>
           <div className="mt-6">
             <Button to="/scenarios" variant="outline">
-              查看使用场景
+              {t('common.viewScenarios')}
             </Button>
           </div>
         </ScrollReveal>

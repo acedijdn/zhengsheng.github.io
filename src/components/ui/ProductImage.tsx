@@ -4,7 +4,7 @@ import SiteImage from './SiteImage'
 
 interface ProductImageProps {
   imageUrl?: string
-  category: string
+  categoryKey: string
   alt: string
   className?: string
   aspectRatio?: string
@@ -14,7 +14,7 @@ interface ProductImageProps {
 
 export default function ProductImage({
   imageUrl,
-  category,
+  categoryKey,
   alt,
   className = '',
   aspectRatio,
@@ -37,7 +37,7 @@ export default function ProductImage({
     )
   }
 
-  const imageKey: ImageKey = getProductImageKey(category)
+  const imageKey: ImageKey = getProductImageKey(categoryKey)
   return (
     <SiteImage imageKey={imageKey} aspectRatio={ratioClass} className={className} />
   )

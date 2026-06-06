@@ -10,6 +10,8 @@ interface ButtonProps {
   size?: ButtonSize
   to?: string
   href?: string
+  /** 外链新窗口打开 */
+  external?: boolean
   className?: string
   type?: 'button' | 'submit'
 }
@@ -42,6 +44,7 @@ export default function Button({
   size = 'md',
   to,
   href,
+  external = false,
   className = '',
   type = 'button',
 }: ButtonProps) {
@@ -66,7 +69,13 @@ export default function Button({
 
   if (href) {
     return (
-      <motion.a href={href} className={classes} {...tapProps}>
+      <motion.a
+        href={href}
+        className={classes}
+        target={external ? '_blank' : undefined}
+        rel={external ? 'noopener noreferrer' : undefined}
+        {...tapProps}
+      >
         {children}
       </motion.a>
     )

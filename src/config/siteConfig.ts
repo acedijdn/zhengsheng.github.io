@@ -35,6 +35,14 @@ export const siteConfig = {
     copyright: '© 2024 Zensheng Technology. All rights reserved.',
     icp: ' ',
   },
+
+  /** 产品购买与询价外链 */
+  purchase: {
+    international:
+      'https://nbzhengshengaudio.m.en.alibaba.com/zh_CN/?spm=a2700.details.0.0.76af70e8iq11Tm&wx_navbar_transparent=true&wx_screen_direc=portrait&productId=1601767592560&from=detail_company_card',
+    domestic:
+      'https://nbzhengsheng.1688.com/?spm=a261y.7663282.shopNavigation.2.619e79108DHv3X&offerId=583324992206&td_page_id=PC-DEFAULT-2025',
+  },
 }
 
 export type ContactChannel = (typeof siteConfig.contact.channels)[number]

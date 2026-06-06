@@ -207,11 +207,12 @@ export const images: Record<ImageKey, ImageConfig> = {
 export const imageList = Object.values(images)
 
 const categoryImageMap: Record<string, ImageKey> = {
-  低频振动器: 'product-vibrator',
-  功率放大器: 'product-driver',
-  扬声器: 'product-module',
-  扩振配件: 'product-kit',
-  配件: 'product-accessory',
+  vibrator: 'product-vibrator',
+  amplifier: 'product-driver',
+  speaker: 'product-module',
+  'haptic-system': 'product-driver',
+  expander: 'product-kit',
+  accessory: 'product-accessory',
 }
 
 const solutionSlugMap: Record<string, ImageKey> = {
