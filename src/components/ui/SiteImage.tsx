@@ -2,6 +2,7 @@ import { useSyncExternalStore } from 'react'
 import type { ImageKey } from '../../config/images'
 import { images } from '../../config/images'
 import { getEffectiveImageUrl } from '../../lib/imageResolver'
+import { imageLoadingProps } from '../../lib/imageLoading'
 import Illustration from '../illustrations/Illustration'
 
 interface SiteImageProps {
@@ -14,6 +15,8 @@ interface SiteImageProps {
   fill?: boolean
   /** cover 裁剪铺满；contain 完整显示不裁切 */
   objectFit?: 'cover' | 'contain'
+  /** 首屏关键图，立即加载（如首页 Hero） */
+  priority?: boolean
 }
 
 function subscribe(callback: () => void) {
@@ -33,6 +36,7 @@ export default function SiteImage({
   alt,
   fill = false,
   objectFit = 'cover',
+  priority = false,
 }: SiteImageProps) {
   useSyncExternalStore(subscribe, getOverrideSnapshot, () => '')
 
@@ -55,7 +59,12 @@ export default function SiteImage({
   if (customUrl) {
     return (
       <div className={`${containerClass} ${className}`}>
-        <img src={customUrl} alt={label} className={imgFitClass} />
+        <img
+          src={customUrl}
+          alt={label}
+          className={imgFitClass}
+          {...imageLoadingProps(priority)}
+        />
       </div>
     )
   }

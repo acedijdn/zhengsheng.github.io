@@ -1,4 +1,5 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import PageBanner from '../components/ui/PageBanner'
 import FilterTabs from '../components/ui/FilterTabs'
 import ProductCard from '../components/cards/ProductCard'
@@ -9,9 +10,33 @@ import { localizeProduct, tCategory } from '../i18n/localize'
 import type { ProductCategoryKey } from '../i18n/translations'
 import { productCategoryKeys } from '../i18n/translations'
 
+function parseCategory(value: string | null): ProductCategoryKey {
+  if (value && productCategoryKeys.includes(value as ProductCategoryKey)) {
+    return value as ProductCategoryKey
+  }
+  return 'all'
+}
+
 export default function Products() {
   const { locale, t } = useLanguage()
-  const [activeCategory, setActiveCategory] = useState<ProductCategoryKey>('all')
+  const [searchParams, setSearchParams] = useSearchParams()
+  const [activeCategory, setActiveCategory] = useState<ProductCategoryKey>(() =>
+    parseCategory(searchParams.get('category')),
+  )
+
+  useEffect(() => {
+    setActiveCategory(parseCategory(searchParams.get('category')))
+  }, [searchParams])
+
+  const handleCategoryChange = (key: string) => {
+    const category = key as ProductCategoryKey
+    setActiveCategory(category)
+    if (category === 'all') {
+      setSearchParams({})
+    } else {
+      setSearchParams({ category })
+    }
+  }
 
   const filteredProducts = useMemo(
     () =>
@@ -31,7 +56,7 @@ export default function Products() {
             <FilterTabs
               tabs={productCategoryKeys}
               activeTab={activeCategory}
-              onTabChange={(key) => setActiveCategory(key as ProductCategoryKey)}
+              onTabChange={handleCategoryChange}
               getLabel={(key) => tCategory(locale, key)}
             />
           </ScrollReveal>

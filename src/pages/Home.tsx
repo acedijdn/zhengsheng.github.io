@@ -15,17 +15,44 @@ import { getMilestones } from '../i18n/pageContent'
 import { siteConfig } from '../config/siteConfig'
 import { CARD_HOVER } from '../lib/cardStyles'
 import { useLanguage } from '../i18n/LanguageProvider'
+import { usePreloadHeroImage } from '../hooks/usePreloadHeroImage'
 
 export default function Home() {
   const { locale, t } = useLanguage()
+  usePreloadHeroImage()
   const milestones = getMilestones(locale)
 
   const products = [
-    { name: t('home.homeProductVibrator'), desc: t('home.homeProductVibratorDesc'), imageKey: 'product-vibrator' as const },
-    { name: t('home.homeProductAmp'), desc: t('home.homeProductAmpDesc'), imageKey: 'product-driver' as const },
-    { name: t('home.homeProductSpeaker'), desc: t('home.homeProductSpeakerDesc'), imageKey: 'product-module' as const },
-    { name: t('home.homeProductExpander'), desc: t('home.homeProductExpanderDesc'), imageKey: 'product-kit' as const },
-    { name: t('home.homeProductAccessory'), desc: t('home.homeProductAccessoryDesc'), imageKey: 'product-accessory' as const },
+    {
+      name: t('home.homeProductVibrator'),
+      desc: t('home.homeProductVibratorDesc'),
+      imageKey: 'product-vibrator' as const,
+      to: '/products?category=vibrator',
+    },
+    {
+      name: t('home.homeProductAmp'),
+      desc: t('home.homeProductAmpDesc'),
+      imageKey: 'product-driver' as const,
+      to: '/products?category=amplifier',
+    },
+    {
+      name: t('home.homeProductSpeaker'),
+      desc: t('home.homeProductSpeakerDesc'),
+      imageKey: 'product-module' as const,
+      to: '/products?category=speaker',
+    },
+    {
+      name: t('home.homeProductExpander'),
+      desc: t('home.homeProductExpanderDesc'),
+      imageKey: 'product-kit' as const,
+      to: '/products?category=expander',
+    },
+    {
+      name: t('home.homeProductAccessory'),
+      desc: t('home.homeProductAccessoryDesc'),
+      imageKey: 'product-accessory' as const,
+      to: '/products?category=accessory',
+    },
   ]
 
   const solutionCards = [
@@ -51,6 +78,7 @@ export default function Home() {
           theme="dark"
           fill
           objectFit="cover"
+          priority
           className="z-0"
         />
         <div
@@ -154,19 +182,25 @@ export default function Home() {
             {products.map((product, index) => (
               <ScrollReveal key={product.imageKey} delay={index * 0.1}>
                 <div
-                  className={`overflow-hidden rounded-xl border border-gray-100 bg-white shadow-sm ${CARD_HOVER}`}
+                  className={`group overflow-hidden rounded-xl border border-gray-100 bg-white shadow-sm ${CARD_HOVER}`}
                 >
-                  <SiteImage
-                    imageKey={product.imageKey}
-                    aspectRatio="aspect-square"
-                    objectFit="contain"
-                    className="min-h-[200px] rounded-none bg-white md:min-h-[220px]"
-                  />
+                  <Link
+                    to={product.to}
+                    className="block"
+                    aria-label={`${t('common.learnMore')} ${product.name}`}
+                  >
+                    <SiteImage
+                      imageKey={product.imageKey}
+                      aspectRatio="aspect-square"
+                      objectFit="contain"
+                      className="min-h-[200px] rounded-none bg-white transition-opacity group-hover:opacity-90 md:min-h-[220px]"
+                    />
+                  </Link>
                   <div className="p-5">
                     <h3 className="font-semibold text-navy">{product.name}</h3>
                     <p className="mt-2 text-sm text-navy/60">{product.desc}</p>
                     <Link
-                      to="/products"
+                      to={product.to}
                       className="mt-3 inline-block text-sm font-medium text-accent"
                     >
                       {t('common.learnMore')} →

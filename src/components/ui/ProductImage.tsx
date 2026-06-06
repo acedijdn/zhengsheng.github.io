@@ -1,5 +1,6 @@
 import type { ImageKey } from '../../config/images'
 import { getProductImageKey } from '../../config/images'
+import { imageLoadingProps } from '../../lib/imageLoading'
 import SiteImage from './SiteImage'
 
 interface ProductImageProps {
@@ -32,6 +33,7 @@ export default function ProductImage({
           src={imageUrl}
           alt={alt}
           className="h-full w-full object-contain p-4 md:p-6"
+          {...imageLoadingProps(variant === 'detail')}
         />
       </div>
     )
