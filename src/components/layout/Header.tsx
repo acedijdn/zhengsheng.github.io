@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { useLanguage } from '../../i18n/LanguageProvider'
 import Button from '../ui/Button'
 
 export default function Header() {
   const [scrolled, setScrolled] = useState(false)
+  const [menuOpen, setMenuOpen] = useState(false)
   const { locale, setLocale, t } = useLanguage()
+  const location = useLocation()
 
   const navItems = [
     { label: t('nav.home'), path: '/' },
@@ -22,11 +24,22 @@ export default function Header() {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
+  useEffect(() => {
+    setMenuOpen(false)
+  }, [location.pathname, location.hash])
+
+  useEffect(() => {
+    document.body.style.overflow = menuOpen ? 'hidden' : ''
+    return () => {
+      document.body.style.overflow = ''
+    }
+  }, [menuOpen])
+
   return (
     <header
       className={`sticky top-0 z-50 border-b transition-all duration-300 ${
-        scrolled
-          ? 'border-gray-100/50 bg-white/80 shadow-sm backdrop-blur-md'
+        scrolled || menuOpen
+          ? 'border-gray-100/50 bg-white/95 shadow-sm backdrop-blur-md'
           : 'border-gray-100 bg-white'
       }`}
     >
@@ -72,7 +85,7 @@ export default function Header() {
           </div>
         </div>
 
-        <div className="flex items-center justify-between py-4 lg:hidden">
+        <div className="flex items-center justify-between py-3 lg:hidden">
           <Link to="/" className="text-lg font-bold tracking-widest text-navy">
             ZENSHENG
           </Link>
@@ -94,34 +107,63 @@ export default function Header() {
                 EN
               </button>
             </div>
-            <div className="flex flex-col gap-1.5 p-1">
-              <span className="block h-0.5 w-5 bg-navy" />
-              <span className="block h-0.5 w-5 bg-navy" />
-              <span className="block h-0.5 w-5 bg-navy" />
-            </div>
+            <button
+              type="button"
+              onClick={() => setMenuOpen((open) => !open)}
+              className="relative flex h-10 w-10 items-center justify-center rounded-lg text-navy hover:bg-gray-50"
+              aria-label={menuOpen ? '关闭菜单' : '打开菜单'}
+              aria-expanded={menuOpen}
+            >
+              <span
+                className={`absolute block h-0.5 w-5 bg-navy transition-transform duration-200 ${
+                  menuOpen ? 'translate-y-0 rotate-45' : '-translate-y-1.5'
+                }`}
+              />
+              <span
+                className={`block h-0.5 w-5 bg-navy transition-opacity duration-200 ${
+                  menuOpen ? 'opacity-0' : 'opacity-100'
+                }`}
+              />
+              <span
+                className={`absolute block h-0.5 w-5 bg-navy transition-transform duration-200 ${
+                  menuOpen ? 'translate-y-0 -rotate-45' : 'translate-y-1.5'
+                }`}
+              />
+            </button>
           </div>
         </div>
-
-        <nav className="border-t border-gray-100 pb-4 lg:hidden">
-          <ul className="flex flex-col gap-1 pt-3">
-            {navItems.map((item) => (
-              <li key={item.path}>
-                <Link
-                  to={item.path}
-                  className="block rounded-lg px-3 py-2.5 text-sm text-navy/80 hover:bg-gray-50"
-                >
-                  {item.label}
-                </Link>
-              </li>
-            ))}
-            <li className="mt-2 px-3">
-              <Button to="/about#contact" size="sm" className="w-full">
-                {t('common.getQuote')}
-              </Button>
-            </li>
-          </ul>
-        </nav>
       </div>
+
+      {menuOpen && (
+        <div className="fixed inset-0 top-[57px] z-40 lg:hidden">
+          <button
+            type="button"
+            className="absolute inset-0 bg-navy/20 backdrop-blur-[2px]"
+            aria-label="关闭菜单"
+            onClick={() => setMenuOpen(false)}
+          />
+          <nav className="relative border-b border-gray-100 bg-white px-4 pb-5 pt-2 shadow-lg">
+            <ul className="flex flex-col gap-1">
+              {navItems.map((item) => (
+                <li key={item.path}>
+                  <Link
+                    to={item.path}
+                    className="block rounded-lg px-3 py-3 text-sm font-medium text-navy/80 hover:bg-gray-50"
+                    onClick={() => setMenuOpen(false)}
+                  >
+                    {item.label}
+                  </Link>
+                </li>
+              ))}
+              <li className="mt-2">
+                <Button to="/about#contact" size="sm" className="w-full">
+                  {t('common.getQuote')}
+                </Button>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      )}
     </header>
   )
 }
