@@ -8,7 +8,7 @@ import {
 import SiteImage from '../../components/ui/SiteImage'
 import PageBanner from '../../components/ui/PageBanner'
 
-const OVERRIDE_NOTE = '已配置 CDN 链接的将直接显示；未配置的使用代码生成图，可上传本地替换。'
+const OVERRIDE_NOTE = '已配置本地图片的将直接显示；未配置的使用代码生成图，可上传本地替换。'
 
 function notifyUpdate() {
   window.dispatchEvent(new Event('zensheng-images-updated'))
@@ -95,7 +95,7 @@ export default function ImagesAdmin() {
                         <p className="mt-1 text-xs text-navy/50">{item.description}</p>
                         <p className="mt-2 text-xs text-accent/80">{OVERRIDE_NOTE}</p>
                         {item.customUrl && !overrides[item.key] && (
-                          <p className="mt-1 text-xs text-green-600">已配置 CDN 图片</p>
+                          <p className="mt-1 text-xs text-green-600">已配置本地图片</p>
                         )}
                         {overrides[item.key] && (
                           <p className="mt-1 text-xs text-green-600">已使用本地替换图</p>
@@ -140,7 +140,7 @@ export default function ImagesAdmin() {
 
           <p className="mt-6 text-sm text-navy/50">
             提示：也可在 <code className="rounded bg-gray-100 px-1.5 py-0.5 text-xs">src/config/images.ts</code>{' '}
-            中为对应项设置 <code className="rounded bg-gray-100 px-1.5 py-0.5 text-xs">customUrl</code> 永久覆盖。
+            中为对应项设置 <code className="rounded bg-gray-100 px-1.5 py-0.5 text-xs">customUrl</code>，或将图片放入 <code className="rounded bg-gray-100 px-1.5 py-0.5 text-xs">public/images</code> 目录。
           </p>
         </div>
       </section>

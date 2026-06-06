@@ -1,4 +1,4 @@
-import { cdnUrl } from '../lib/cdn'
+import { localImage } from '../lib/localImage'
 
 export interface ProductSpec {
   label: string
@@ -47,18 +47,18 @@ function specsToFeatures(specs: ProductSpec[]) {
 }
 
 const IMG = {
-  zs0508: cdnUrl('/网站/ZS0508.png'),
-  zs0608: cdnUrl('/网站/ZS0608.png'),
-  zs0808: cdnUrl('/网站/ZS0808.png'),
-  zs2508: cdnUrl('/网站/ZS2508.png'),
-  zs1808: cdnUrl('/网站/ZS1808.png'),
-  zs200806: cdnUrl('/网站/2008-06.png'),
-  zs0508k: cdnUrl('/ZS0508K.png'),
-  expander: cdnUrl('/网站/扩振板.png'),
-  amp: cdnUrl('/网站/主机.jpg'),
-  speaker: cdnUrl('/网站/图片4.png'),
-  harness: cdnUrl('/网站/线束.jpg'),
-  kit: cdnUrl('/网站/体感讨价.png'),
+  zs0508: localImage('ZS0508.png'),
+  zs0608: localImage('ZS0608.png'),
+  zs0808: localImage('ZS0808.png'),
+  zs2508: localImage('ZS2508.webp'),
+  zs1808: localImage('ZS1808.webp'),
+  zs200806: localImage('2008-06.png'),
+  zs0508k: localImage('ZS0508K.png'),
+  expander: localImage('扩振板.png'),
+  amp: localImage('主机.jpg'),
+  speaker: localImage('图片4.webp'),
+  harness: localImage('线束.jpg'),
+  kit: localImage('体感讨价.webp'),
 }
 
 export const products: Product[] = [
