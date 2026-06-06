@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import PageBanner from '../components/ui/PageBanner'
 import Button from '../components/ui/Button'
 import SiteImage from '../components/ui/SiteImage'
@@ -24,10 +25,17 @@ export default function Solutions() {
                   index % 2 === 1 ? 'lg:[&>*:first-child]:order-2' : ''
                 }`}
               >
-                <SiteImage
-                  imageKey={getSolutionImageKeyFromPath(solution.to)}
-                  aspectRatio="aspect-[4/3]"
-                />
+                <Link
+                  to={solution.to}
+                  className="group block"
+                  aria-label={`${t('common.viewDetails')} ${solution.title}`}
+                >
+                  <SiteImage
+                    imageKey={getSolutionImageKeyFromPath(solution.to)}
+                    aspectRatio="aspect-[4/3]"
+                    className="transition-opacity group-hover:opacity-90"
+                  />
+                </Link>
                 <div>
                   <h2 className="text-2xl font-semibold text-navy md:text-3xl">
                     {solution.title}

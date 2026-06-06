@@ -203,12 +203,12 @@ export const translations: Record<Locale, TranslationTree> = {
     about: {
       brandStory: 'Our Story',
       contactUs: 'Contact Us',
-      contactSubtitle: 'Contact Zensheng for your custom haptic technology solution',
+      contactSubtitle: 'Contact Zhengsheng for your custom haptic technology solution',
       contactInfo: 'Contact Information',
       milestones: 'Milestones',
     },
     site: {
-      tagline: 'Zensheng — Global Supplier of Haptic Audio Systems',
+      tagline: 'Zhengsheng — Global Supplier of Haptic Audio Systems',
     },
   },
 }

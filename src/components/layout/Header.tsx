@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { Link, useLocation } from 'react-router-dom'
+import { siteConfig } from '../../config/siteConfig'
 import { useLanguage } from '../../i18n/LanguageProvider'
 import Button from '../ui/Button'
 
@@ -95,7 +96,7 @@ export default function Header() {
         <div className="container mx-auto px-4 md:px-6 lg:px-8">
           <div className="hidden items-center justify-between py-4 lg:flex">
             <Link to="/" className="text-xl font-bold tracking-widest text-navy">
-              ZENSHENG
+              {siteConfig.brand.name}
             </Link>
 
             <nav className="flex items-center gap-6 xl:gap-8">
@@ -143,7 +144,7 @@ export default function Header() {
             style={{ maxHeight: MOBILE_HEADER_HEIGHT }}
           >
             <Link to="/" className="text-lg font-bold tracking-widest text-navy">
-              ZENSHENG
+              {siteConfig.brand.name}
             </Link>
             <div className="flex items-center gap-3">
               <div className="flex items-center gap-1.5 text-xs">

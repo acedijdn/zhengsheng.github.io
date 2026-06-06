@@ -2,7 +2,7 @@
 
 export const siteConfig = {
   brand: {
-    name: 'ZENSHENG',
+    name: 'ZHENGSHENG',
     companyName: '宁波正盛音响科技有限公司',
     tagline: '正盛科技——音波体感系统全球供应商',
     slogan: '体感技术心脏，为全球智能家居赋能',
@@ -32,7 +32,7 @@ export const siteConfig = {
   ],
 
   footer: {
-    copyright: '© 2024 Zensheng Technology. All rights reserved.',
+    copyright: '© 2024 Zhengsheng Technology. All rights reserved.',
     icp: ' ',
   },
 
